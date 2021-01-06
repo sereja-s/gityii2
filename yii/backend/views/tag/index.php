@@ -12,28 +12,28 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tag-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+	<h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Tag', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+	<p>
+		<?= Html::a('Create Tag', ['create'], ['class' => 'btn btn-success']) ?>
+	</p>
 
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+	    <?php Pjax::begin(); ?>
+			    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+	
+			<?= GridView::widget([
+		'dataProvider' => $dataProvider,
+		'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+		['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+		            'id',
             'name',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-    <?php Pjax::end(); ?>
+		['class' => 'yii\grid\ActionColumn'],
+		],
+		]); ?>
+	
+	    <?php Pjax::end(); ?>
 
 </div>
