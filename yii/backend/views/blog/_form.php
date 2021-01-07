@@ -37,7 +37,7 @@ use vova07\imperavi\Widget;
 
 	<?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
 
-	<?= $form->field($model, 'status_id')->dropDownList(\common\models\Blog::getStatusList()) ?>
+	<?= $form->field($model, 'status_id')->dropDownList(\common\models\Blog::STATUS_LIST) ?>
 
 	<?= $form->field($model, 'sort')->textInput() ?>
 

@@ -33,8 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			'title',
 
 			['attribute' => 'url', 'format' => 'raw'],
-			['attribute' => 'status_id', 'filter' => \common\models\Blog::getStatusList(), 'value' => 'statusName'],
+			['attribute' => 'status_id', 'filter' => \common\models\Blog::STATUS_LIST,'value' => 'statusName'],
 			'sort',
+			'date_create',
+			'date_update',
 			['attribute' => 'tags', 'value' => 'tagsAsString'],
 			[
 				'class' => 'yii\grid\ActionColumn',
