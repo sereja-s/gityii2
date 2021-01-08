@@ -20,6 +20,7 @@ use vova07\imperavi\Widget;
 		'settings' => [
 			'lang' => 'ru',
 			'minHeight' => 200,
+			'imageUpload' => \yii\helpers\Url::to(['/site/save-redactor-img', 'sub' => 'blog']),
 			'plugins' => [
 				'clips',
 				'fullscreen',
