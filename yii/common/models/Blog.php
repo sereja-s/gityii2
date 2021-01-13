@@ -3,11 +3,12 @@
 namespace common\models;
 
 use common\components\behaviors\StatusBehavior;
+use yii\web\UploadedFile;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-
+use yii\helpers\Url;
 
 
 /**
@@ -16,6 +17,7 @@ use yii\db\Expression;
  * @property int $id
  * @property string $title
  * @property string|null $text
+ * @property string $image
  * @property string $url
  * @property string $date_create
  * @property string $date_update
@@ -24,8 +26,9 @@ use yii\db\Expression;
  */
 class Blog extends ActiveRecord
 {
-	const STATUS_LIST = ['off','on'];
+	const STATUS_LIST = ['off', 'on'];
 	public $tags_array;
+	public $file;
 	/**
 	 * {@inheritdoc}
 	 */
@@ -62,6 +65,8 @@ class Blog extends ActiveRecord
 			[['status_id', 'sort'], 'integer'],
 			[['sort'], 'integer', 'max' => 99, 'min' => 1],
 			[['title', 'url'], 'string', 'max' => 150],
+			[['image'], 'string', 'max' => 100],
+			[['file'], 'image'],
 			[['tags_array', 'date_create', 'date_update'], 'safe'],
 		];
 	}
@@ -79,6 +84,8 @@ class Blog extends ActiveRecord
 			'status_id' => 'Статус',
 			'sort' => 'Сортировка',
 			'tags_array' => 'Теги',
+			'image' => 'Картинка',
+			'file' => 'Картинка',
 			'tagsAsString' => 'Теги',
 			'author.username' => 'Имя автора',
 			'author.email' => 'Почта автора',
@@ -90,6 +97,11 @@ class Blog extends ActiveRecord
 	public function getAuthor()
 	{
 		return $this->hasOne(User::className(), ['id' => 'user_id']);
+	}
+	public function getImages()
+	{
+		return $this->hasMany(ImageManager::className(), ['item_id' => 'id'])
+			->andWhere(['class' => self::tableName()]);
 	}
 	public function getBlogTag()
 	{
@@ -104,10 +116,49 @@ class Blog extends ActiveRecord
 		$arr = \yii\helpers\ArrayHelper::map($this->tags, 'id', 'name');
 		return implode(', ', $arr);
 	}
+	public function getSmallImage()
+	{
+		if ($this->image) {
+			$path = str_replace('admin.', '', Url::home(true)) . 'uploads/images/blog/50x50/' . $this->image;
+		} else {
+			$path = str_replace('admin.', '', Url::home(true)) . 'uploads/images/nophoto.svg';
+		}
+		return $path;
+	}
 	public function afterFind()
 	{
 		parent::afterFind();
 		$this->tags_array = $this->tags;
+	}
+	public function beforeSave($insert)
+	{
+		if ($file = UploadedFile::getInstance($this, 'file')) {
+			$dir = Yii::getAlias('@images') . '/blog/';
+			if (!is_dir($dir . $this->image)) {
+				if (file_exists($dir . $this->image)) {
+					unlink($dir . $this->image);
+				}
+				if (file_exists($dir . '50x50/' . $this->image)) {
+					unlink($dir . '50x50/' . $this->image);
+				}
+				if (file_exists($dir . '800x/' . $this->image)) {
+					unlink($dir . '800x/' . $this->image);
+				}
+			}
+			$this->image = strtotime('now') . '_' . Yii::$app->getSecurity()->generateRandomString(6) . '.' .
+				$file->extension;
+			$file->saveAs($dir . $this->image);
+			$imag = Yii::$app->image->load($dir . $this->image);
+			$imag->background('#fff', 0);
+			$imag->resize('50', '50', Yii\image\drivers\Image::INVERSE);
+			$imag->crop('50', '50');
+			$imag->save($dir . '50x50/' . $this->image, 90);
+			$imag = Yii::$app->image->load($dir . $this->image);
+			$imag->background('#fff', 0);
+			$imag->resize('800', null, Yii\image\drivers\Image::INVERSE);
+			$imag->save($dir . '800x/' . $this->image, 90);
+		}
+		return parent::beforeSave($insert);
 	}
 	public function afterSave($insert, $changedAttributes)
 	{

@@ -2,9 +2,7 @@
 
 namespace backend\controllers;
 
-
-
-
+use common\models\ImageManager;
 use Yii;
 
 
@@ -17,6 +15,7 @@ use yii\web\UploadedFile;
 use yii\helpers\Url;
 use yii\base\DynamicModel;
 use yii\helpers\FileHelper;
+use yii\validators\Validator;
 use yii\web\BadRequestHttpException;
 
 
@@ -39,7 +38,7 @@ class SiteController extends Controller
 						'allow' => true,
 					],
 					[
-						'actions' => ['logout', 'index', 'save-redactor-img'],
+						'actions' => ['logout', 'index', 'save-redactor-img', 'save-img'],
 						'allow' => true,
 						'roles' => ['@'],
 					],
@@ -144,6 +143,50 @@ class SiteController extends Controller
 						'error' => Yii::t('vova07/imperavi', 'ERROR_CAN_NOT_UPLOAD_FILE')
 					];
 				}
+			}
+			Yii::$app->response->format = Response::FORMAT_JSON;
+
+
+			return $result;
+		} else {
+			throw new BadRequestHttpException('Only POST is allowed');
+		}
+	}
+	public function actionSaveImg()
+	{
+		$this->enableCsrfValidation = false;
+		if (Yii::$app->request->isPost) {
+			$post = Yii::$app->request->post();
+			$dir = Yii::getAlias('@images') . '/' . $post['ImageManager']['class'] . '/';
+			if (!file_exists($dir)) {
+				FileHelper::createDirectory($dir);
+			}
+			$result_link = str_replace('admin.', '', Url::home(true)) . 'uploads/images/' . $post['class'] . '/';
+			$file = UploadedFile::getInstanceByName('ImageManager[attachment]');
+			$model = new ImageManager();
+			$model->name = strtotime('now') . '_' . Yii::$app->getSecurity()->generateRandomString(6)  . '.' .
+				$file->extension;
+			$model->load($post);
+			$model->validate();
+
+			if ($model->hasErrors()) {
+				$result = [
+					'error' => $model->getFirstError('file')
+				];
+			} else {
+
+
+				if ($file->saveAs($dir . $model->name)) {
+					$imag = Yii::$app->image->load($dir . $model->name);
+					$imag->resize(375, NULL, Yii\image\drivers\Image::PRECISE)
+						->save($dir . $model->name, 85);
+					$result = ['filelink' => $result_link . $model->name, 'filename' => $model->name];
+				} else {
+					$result = [
+						'error' => 'ошибка'
+					];
+				}
+				$model->save();
 			}
 			Yii::$app->response->format = Response::FORMAT_JSON;
 

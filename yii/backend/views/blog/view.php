@@ -1,7 +1,11 @@
 <?php
 
+
+
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Blog */
@@ -38,7 +42,34 @@ $this->params['breadcrumbs'][] = $this->title;
 			'author.username',
 			'author.email',
 			'tagsAsString',
+			'smallimage:image',
 		],
 	]) ?>
+
+	<?php
+	$fotorama = \metalguardian\fotorama\Fotorama::begin(
+		[
+			'options' => [
+				'loop' => true,
+				'hash' => true,
+				'ratio' => 800 / 600,
+			],
+			'spinner' => [
+				'lines' => 20,
+			],
+			'tagName' => 'span',
+			'useHtmlData' => false,
+			'htmlOptions' => [
+				'class' => 'custom-class',
+				'id' => 'custom-id',
+			],
+		]
+	);
+	foreach ($model->images as $one) {
+		echo Html::img($one->ImageUrl, ['alt' => $one->alt]);
+	}
+	?>
+
+	<?php \metalguardian\fotorama\Fotorama::end(); ?>
 
 </div>
