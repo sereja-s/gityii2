@@ -6,6 +6,7 @@ use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use vova07\imperavi\Widget;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Blog */
@@ -81,14 +82,23 @@ use vova07\imperavi\Widget;
 			'multiple' => true
 		],
 		'pluginOptions' => [
-
+			'deleteUrl' => Url::toRoute(['/blog/delete-image']),
+			'initialPreview' => $model->imagesLinks,
+			'initialPreviewAsData' => true,
+			'overwriteInitial' => false,
+			'initialPreviewConfig' => $model->imagesLinksData,
 			'uploadUrl' => yii\helpers\Url::to(['/site/save-img']),
 			'uploadExtraData' => [
 				'ImageManager[class]' => $model->formName(),
 				'ImageManager[item_id]' => $model->id
 			],
 			'maxFileCount' => 10
-		]
+		],
+		'pluginEvents' => [
+			'filesorted' => new \yii\web\JsExpression('function(event, params){
+					$.post("' . Url::toRoute(["/blog/sort-image", "id" => $model->id]) . '",{sort: params});
+			}')
+		],
 	]); ?>
 
 </div>

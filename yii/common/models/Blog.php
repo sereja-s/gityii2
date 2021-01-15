@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 
@@ -98,24 +99,47 @@ class Blog extends ActiveRecord
 	{
 		return $this->hasOne(User::className(), ['id' => 'user_id']);
 	}
+
 	public function getImages()
 	{
 		return $this->hasMany(ImageManager::className(), ['item_id' => 'id'])
-			->andWhere(['class' => self::tableName()]);
+			->andWhere(['class' => self::tableName()])->orderBy('sort');
 	}
+
+	public function getImagesLinks()
+	{
+		return ArrayHelper::getColumn($this->images, 'imageUrl');
+	}
+
+	public function getImagesLinksData()
+	{
+		return ArrayHelper::toArray(
+			$this->images,
+			[
+				ImageManager::className() => [
+					'caption' => 'name',
+					'key' => 'id',
+				]
+			]
+		);
+	}
+
 	public function getBlogTag()
 	{
 		return $this->hasMany(BlogTag::className(), ['blog_id' => 'id']);
 	}
+
 	public function getTags()
 	{
 		return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->via('blogTag');
 	}
+
 	public function getTagsAsString()
 	{
 		$arr = \yii\helpers\ArrayHelper::map($this->tags, 'id', 'name');
 		return implode(', ', $arr);
 	}
+
 	public function getSmallImage()
 	{
 		if ($this->image) {
@@ -125,11 +149,13 @@ class Blog extends ActiveRecord
 		}
 		return $path;
 	}
+
 	public function afterFind()
 	{
 		parent::afterFind();
 		$this->tags_array = $this->tags;
 	}
+
 	public function beforeSave($insert)
 	{
 		if ($file = UploadedFile::getInstance($this, 'file')) {
@@ -160,6 +186,7 @@ class Blog extends ActiveRecord
 		}
 		return parent::beforeSave($insert);
 	}
+
 	public function afterSave($insert, $changedAttributes)
 	{
 		parent::afterSave($insert, $changedAttributes);
