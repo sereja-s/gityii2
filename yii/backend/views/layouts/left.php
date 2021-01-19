@@ -32,6 +32,7 @@
 				'items' => [
 					['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
 					['label' => 'Блог', 'icon' => 'pencil', 'url' => ['/blog']],
+					['label' => 'Time', 'icon' => 'history', 'url' => ['/time']],
 					['label' => 'Теги', 'icon' => 'tags', 'url' => ['/tag']],
 					['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
 					['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
