@@ -34,6 +34,8 @@
 					['label' => 'Блог', 'icon' => 'pencil', 'url' => ['/blog']],
 					['label' => 'Time', 'icon' => 'history', 'url' => ['/time']],
 					['label' => 'Теги', 'icon' => 'tags', 'url' => ['/tag']],
+					['label' => 'Продукт', 'icon' => 'product-hunt', 'url' => ['/product']],
+					['label' => 'Склад', 'icon' => 'cubes', 'url' => ['/sklad']],
 					['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
 					['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
 					['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
