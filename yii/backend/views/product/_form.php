@@ -1,5 +1,6 @@
 <?php
 
+use kartik\datecontrol\DateControl;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,6 +18,8 @@ use yii\widgets\ActiveForm;
 	<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
 	<?= $form->field($model, 'cost')->textInput() ?>
+
+	<?= $form->field($model, 'date')->widget(DateControl::className(), []) ?>
 
 	<?= $form->field($model, 'type_id')->dropDownList(\common\models\Product::getTypeList()) ?>
 

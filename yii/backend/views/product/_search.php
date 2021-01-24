@@ -10,31 +10,34 @@ use yii\widgets\ActiveForm;
 
 <div class="product-search">
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
-    ]); ?>
+	<?php $form = ActiveForm::begin([
+		'action' => ['index'],
+		'method' => 'get',
+		'options' => [
+			'data-pjax' => 1
+		],
+	]); ?>
 
-    <?= $form->field($model, 'id') ?>
+	<?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'sklad_id') ?>
+	<?= $form->field($model, 'sklad_id') ?>
 
-    <?= $form->field($model, 'title') ?>
+	<?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'cost') ?>
+	<?= $form->field($model, 'cost') ?>
 
-    <?= $form->field($model, 'type_id') ?>
+	<?= $form->field($model, 'date') ?>
 
-    <?php // echo $form->field($model, 'text') ?>
+	<?= $form->field($model, 'type_id') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
+	<?php // echo $form->field($model, 'text') 
+	?>
 
-    <?php ActiveForm::end(); ?>
+	<div class="form-group">
+		<?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+		<?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+	</div>
+
+	<?php ActiveForm::end(); ?>
 
 </div>

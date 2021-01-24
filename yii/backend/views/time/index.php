@@ -18,24 +18,25 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?= Html::a('Create Time', ['create'], ['class' => 'btn btn-success']) ?>
 	</p>
 
-	    <?php Pjax::begin(); ?>
-			    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-	
-			<?= GridView::widget([
+	<?php Pjax::begin(); ?>
+	<?php // echo $this->render('_search', ['model' => $searchModel]); 
+	?>
+
+	<?= GridView::widget([
 		'dataProvider' => $dataProvider,
 		'filterModel' => $searchModel,
-        'columns' => [
-		['class' => 'yii\grid\SerialColumn'],
+		'columns' => [
+			['class' => 'yii\grid\SerialColumn'],
 
-		            'id',
-            'time',
-            'date',
-            'datetime',
+			'id',
+			'time',
+			'date',
+			'datetime',
 
-		['class' => 'yii\grid\ActionColumn'],
+			['class' => 'yii\grid\ActionColumn'],
 		],
-		]); ?>
-	
-	    <?php Pjax::end(); ?>
+	]); ?>
+
+	<?php Pjax::end(); ?>
 
 </div>

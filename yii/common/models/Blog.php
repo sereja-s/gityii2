@@ -227,6 +227,7 @@ class Blog extends ActiveRecord
 					unlink($dir . $size_dir . '/' . $this->image);
 				}
 			}
+
 			BlogTag::deleteAll(['blog_id' => $this->id]);
 			return true;
 		} else {

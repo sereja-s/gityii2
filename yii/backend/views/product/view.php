@@ -13,29 +13,30 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+	<h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+	<p>
+		<?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('Delete', ['delete', 'id' => $model->id], [
+			'class' => 'btn btn-danger',
+			'data' => [
+				'confirm' => 'Are you sure you want to delete this item?',
+				'method' => 'post',
+			],
+		]) ?>
+	</p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'sklad_id',
-            'title',
-            'cost',
-            'type_id',
-            'text:ntext',
-        ],
-    ]) ?>
+	<?= DetailView::widget([
+		'model' => $model,
+		'attributes' => [
+			'id',
+			'sklad_id',
+			'title',
+			'cost',
+			'date:date',
+			'type_id',
+			'text:ntext',
+		],
+	]) ?>
 
 </div>

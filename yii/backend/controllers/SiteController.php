@@ -34,11 +34,16 @@ class SiteController extends Controller
 				'class' => AccessControl::className(),
 				'rules' => [
 					[
+						'actions' => ['index'],
+						'allow' => true,
+						'roles' => ['canAdmin'],
+					],
+					[
 						'actions' => ['login', 'error'],
 						'allow' => true,
 					],
 					[
-						'actions' => ['logout', 'index', 'save-redactor-img', 'save-img'],
+						'actions' => ['logout', 'save-redactor-img', 'save-img'],
 						'allow' => true,
 						'roles' => ['@'],
 					],
