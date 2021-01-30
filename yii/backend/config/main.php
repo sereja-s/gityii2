@@ -17,6 +17,10 @@ return [
 	'bootstrap' => ['log', 'gii', 'debug'],
 	'language' => 'ru',
 	'modules' => [
+		'treemanager' =>  [
+			'class' => '\kartik\tree\Module',
+			// other module settings, refer detailed documentation
+		],
 		'gii' => [
 			'class' => 'yii\gii\Module',
 			'generators' => [ // здесь

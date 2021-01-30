@@ -31,6 +31,7 @@
 				'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
 				'items' => [
 					['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+					['label' => 'Menu Kartika', 'icon' => 'bars', 'url' => ['/kartik-menu']],
 					['label' => 'Блог', 'icon' => 'pencil', 'url' => ['/blog']],
 					['label' => 'Time', 'icon' => 'history', 'url' => ['/time']],
 					['label' => 'Теги', 'icon' => 'tags', 'url' => ['/tag']],
